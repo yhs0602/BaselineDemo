@@ -1,12 +1,12 @@
-import gymnasium as gym
 from craftground import craftground
-from craftground.wrappers.sb3_environment import StableBaseline3Wrapper
 from stable_baselines3 import A2C
+
+from action_wrapper import ActionWrapper, Action
+from avoid_damage import AvoidDamageWrapper
+from vision_wrapper import VisionWrapper
 
 
 def main():
-    env = gym.make("CartPole-v1", render_mode="rgb_array")
-
     env = craftground.make(
         env_path="../minecraft_env",
         verbose=True,
@@ -35,7 +35,10 @@ def main():
         render_distance=2,
         simulation_distance=5,
     )
-    env = StableBaseline3Wrapper(env)
+    env = ActionWrapper(
+        AvoidDamageWrapper(VisionWrapper(env, x_dim=320, y_dim=240)),
+        enabled_actions=[Action.FORWARD, Action.BACKWARD],
+    )
 
     model = A2C("MlpPolicy", env, verbose=1)
     model.learn(total_timesteps=10_000)
