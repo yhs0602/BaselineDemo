@@ -11,6 +11,7 @@ cloudpickle==3.0.0
 contourpy==1.1.1
 craftground @ git+https://github.com/yhs0602/CraftGround@486bf5349062d4e204abb4aef0c8598e346f1894
 cycler==0.12.1
+decorator==4.4.2
 docker-pycreds==0.4.0
 Farama-Notifications==0.0.4
 filelock==3.12.4
@@ -23,6 +24,8 @@ google-auth-oauthlib==1.1.0
 grpcio==1.59.0
 gymnasium==0.29.1
 idna==3.4
+imageio==2.31.5
+imageio-ffmpeg==0.4.9
 importlib-metadata==6.8.0
 importlib-resources==6.1.0
 Jinja2==3.1.2
@@ -32,6 +35,7 @@ markdown-it-py==3.0.0
 MarkupSafe==2.1.3
 matplotlib==3.8.0
 mdurl==0.1.2
+moviepy==1.0.3
 mpmath==1.3.0
 networkx==3.2
 numpy==1.26.1
@@ -41,6 +45,7 @@ packaging==23.2
 pandas==2.1.1
 pathtools==0.1.2
 Pillow==10.1.0
+proglog==0.1.10
 protobuf==4.23.4
 psutil==5.9.6
 pyasn1==0.5.0
