@@ -4,13 +4,13 @@ from stable_baselines3 import A2C
 from action_wrapper import ActionWrapper, Action
 from avoid_damage import AvoidDamageWrapper
 from fast_reset import FastResetWrapper
+from time_limit_wrapper import TimeLimitWrapper
 from vision_wrapper import VisionWrapper
 
 
 def main():
     env = craftground.make(
-        env_path="../minecraft_env",
-        verbose=True,
+        # env_path="../minecraft_env",
         port=8023,
         initialInventoryCommands=[],
         initialPosition=None,  # nullable
@@ -18,10 +18,10 @@ def main():
             "minecraft:husk ~ ~ ~5 {HandItems:[{Count:1,id:iron_shovel},{}]}",
             # player looks at south (positive Z) when spawn
         ],
-        imageSizeX=320,
-        imageSizeY=240,
-        visibleSizeX=320,
-        visibleSizeY=240,
+        imageSizeX=114,
+        imageSizeY=64,
+        visibleSizeX=114,
+        visibleSizeY=64,
         seed=12345,  # nullable
         allowMobSpawn=False,
         alwaysDay=True,
@@ -37,24 +37,27 @@ def main():
         simulation_distance=5,
     )
     env = FastResetWrapper(
-        ActionWrapper(
-            AvoidDamageWrapper(VisionWrapper(env, x_dim=320, y_dim=240)),
-            enabled_actions=[Action.FORWARD, Action.BACKWARD],
+        TimeLimitWrapper(
+            ActionWrapper(
+                AvoidDamageWrapper(VisionWrapper(env, x_dim=114, y_dim=64)),
+                enabled_actions=[Action.FORWARD, Action.BACKWARD],
+            ),
+            max_timesteps=400,
         )
     )
 
     model = A2C("MlpPolicy", env, verbose=1)
-    model.learn(total_timesteps=400)
+    model.learn(total_timesteps=10000)
 
-    vec_env = model.get_env()
-    obs = vec_env.reset()
-    for i in range(1000):
-        action, _state = model.predict(obs, deterministic=True)
-        obs, reward, done, info = vec_env.step(action)
-        vec_env.render("human")
-        # VecEnv resets automatically
-        # if done:
-        #   obs = vec_env.reset()
+    # vec_env = model.get_env()
+    # obs = vec_env.reset()
+    # for i in range(1000):
+    #     action, _state = model.predict(obs, deterministic=True)
+    #     obs, reward, done, info = vec_env.step(action)
+    #     # vec_env.render("human")
+    #     # VecEnv resets automatically
+    #     # if done:
+    #     #   obs = vec_env.reset()
 
 
 if __name__ == "__main__":
