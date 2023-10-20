@@ -1,5 +1,7 @@
+import wandb
 from craftground import craftground
 from stable_baselines3 import A2C
+from stable_baselines3.common.callbacks import BaseCallback
 
 from action_wrapper import ActionWrapper, Action
 from avoid_damage import AvoidDamageWrapper
@@ -8,7 +10,29 @@ from time_limit_wrapper import TimeLimitWrapper
 from vision_wrapper import VisionWrapper
 
 
+class WandbCallback(BaseCallback):
+    def __init__(self, verbose=0):
+        super(WandbCallback, self).__init__(verbose)
+
+    def _on_step(self) -> bool:
+        # Log training information to wandb
+        wandb.log(
+            {
+                "total_timesteps": self.num_timesteps,
+                "episode_reward": self.locals["episode_reward"],
+            }
+        )
+        return True
+
+
 def main():
+    wandb.init(
+        # set the wandb project where this run will be logged
+        project="craftground-sb3",
+        entity="jourhyang123",
+        # track hyperparameters and run metadata
+        group="escape-husk",
+    )
     env = craftground.make(
         # env_path="../minecraft_env",
         port=8023,
@@ -46,8 +70,10 @@ def main():
         )
     )
 
-    model = A2C("MlpPolicy", env, verbose=1)
-    model.learn(total_timesteps=10000)
+    model = A2C("MlpPolicy", env, verbose=1, device="mps")
+    wandb_callback = WandbCallback()
+    model.learn(total_timesteps=10000, callback=wandb_callback)
+    model.save("a2c_craftground")
 
     # vec_env = model.get_env()
     # obs = vec_env.reset()
