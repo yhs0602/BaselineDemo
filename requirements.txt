@@ -8,7 +8,7 @@ charset-normalizer==3.3.0
 click==8.1.7
 cloudpickle==3.0.0
 contourpy==1.1.1
-craftground @ git+https://github.com/yhs0602/CraftGround@9537cef92c5e6e86165224af4ef2c017c21856f1
+craftground @ git+https://github.com/yhs0602/CraftGround@d53b43bf0825df960d4d3cc6fa064122f73d8be0
 cycler==0.12.1
 Farama-Notifications==0.0.4
 filelock==3.12.4

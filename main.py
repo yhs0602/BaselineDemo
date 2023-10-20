@@ -3,6 +3,7 @@ from stable_baselines3 import A2C
 
 from action_wrapper import ActionWrapper, Action
 from avoid_damage import AvoidDamageWrapper
+from fast_reset import FastResetWrapper
 from vision_wrapper import VisionWrapper
 
 
@@ -35,13 +36,15 @@ def main():
         render_distance=2,
         simulation_distance=5,
     )
-    env = ActionWrapper(
-        AvoidDamageWrapper(VisionWrapper(env, x_dim=320, y_dim=240)),
-        enabled_actions=[Action.FORWARD, Action.BACKWARD],
+    env = FastResetWrapper(
+        ActionWrapper(
+            AvoidDamageWrapper(VisionWrapper(env, x_dim=320, y_dim=240)),
+            enabled_actions=[Action.FORWARD, Action.BACKWARD],
+        )
     )
 
     model = A2C("MlpPolicy", env, verbose=1)
-    model.learn(total_timesteps=10_000)
+    model.learn(total_timesteps=400)
 
     vec_env = model.get_env()
     obs = vec_env.reset()

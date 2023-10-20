@@ -25,6 +25,7 @@ class AvoidDamageWrapper(gym.Wrapper):
 
         reward = reward + self.base_reward
         if is_dead:
+            print(info_obs)
             print(f"{info_obs.last_death_message=}")
             self.health_deque.append(20)
             terminated = True
