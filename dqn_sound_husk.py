@@ -1,18 +1,14 @@
+import wandb
 from craftground import craftground
 from craftground.wrappers.action import ActionWrapper, Action
 from craftground.wrappers.fast_reset import FastResetWrapper
+from craftground.wrappers.sound import SoundWrapper
 from craftground.wrappers.time_limit import TimeLimitWrapper
-from craftground.wrappers.vision import VisionWrapper
-from stable_baselines3 import A2C, DQN
+from stable_baselines3 import DQN
 from stable_baselines3.common.monitor import Monitor
-from stable_baselines3.common.vec_env import (
-    VecVideoRecorder,
-    DummyVecEnv,
-    VecFrameStack,
-)
+from stable_baselines3.common.vec_env import VecVideoRecorder, DummyVecEnv
 from wandb.integration.sb3 import WandbCallback
 
-import wandb
 from avoid_damage import AvoidDamageWrapper
 
 
@@ -22,13 +18,13 @@ def main():
         project="craftground-sb3",
         entity="jourhyang123",
         # track hyperparameters and run metadata
-        group="escape-husk-stacked",
+        group="escape-husk-sound",
         sync_tensorboard=True,  # auto-upload sb3's tensorboard metrics
         monitor_gym=True,  # auto-upload the videos of agents playing the game
         save_code=True,  # optional    save_code=True,  # optional
     )
     env = craftground.make(
-        port=8022,
+        port=8011,
         initialInventoryCommands=[],
         initialPosition=None,  # nullable
         initialMobsCommands=[
@@ -60,7 +56,16 @@ def main():
     env = FastResetWrapper(
         TimeLimitWrapper(
             ActionWrapper(
-                AvoidDamageWrapper(VisionWrapper(env, x_dim=114, y_dim=64)),
+                AvoidDamageWrapper(
+                    SoundWrapper(
+                        env,
+                        sound_list=[
+                            "subtitles.entity.husk.ambient",
+                            "subtitles.block.generic.footsteps",
+                        ],
+                        coord_dim=2,
+                    )
+                ),
                 enabled_actions=[
                     Action.FORWARD,
                     Action.BACKWARD,
@@ -81,15 +86,8 @@ def main():
         record_video_trigger=lambda x: x % 4000 == 0,
         video_length=400,
     )
-    env = VecFrameStack(env, n_stack=4)
     model = DQN(
-        "CnnPolicy",
-        env,
-        verbose=1,
-        device="mps",
-        tensorboard_log=f"runs/{run.id}",
-        optimize_memory_usage=True,
-        replay_buffer_kwargs={"handle_timeout_termination": False},
+        "MlpPolicy", env, verbose=1, device="mps", tensorboard_log=f"runs/{run.id}"
     )
 
     model.learn(
@@ -100,7 +98,7 @@ def main():
             verbose=2,
         ),
     )
-    model.save("dqn_stack_craftground")
+    # model.save("dqn_sound_husk")
     run.finish()
 
     # vec_env = model.get_env()
