@@ -1,18 +1,17 @@
+import wandb
 from craftground import craftground
 from craftground.wrappers.action import ActionWrapper, Action
 from craftground.wrappers.fast_reset import FastResetWrapper
 from craftground.wrappers.time_limit import TimeLimitWrapper
 from craftground.wrappers.vision import VisionWrapper
-from stable_baselines3 import A2C, DQN
+from stable_baselines3 import A2C
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import (
     VecVideoRecorder,
     DummyVecEnv,
-    VecFrameStack,
 )
 from wandb.integration.sb3 import WandbCallback
 
-import wandb
 from avoid_damage import AvoidDamageWrapper
 
 
@@ -22,7 +21,7 @@ def main():
         project="craftground-sb3",
         entity="jourhyang123",
         # track hyperparameters and run metadata
-        group="escape-husk-a2c",
+        group="escape-husk-a2c-biocular",
         sync_tensorboard=True,  # auto-upload sb3's tensorboard metrics
         monitor_gym=True,  # auto-upload the videos of agents playing the game
         save_code=True,  # optional    save_code=True,  # optional
@@ -56,6 +55,7 @@ def main():
         render_action=True,
         render_distance=2,
         simulation_distance=5,
+        is_biocular=True,
     )
     env = FastResetWrapper(
         TimeLimitWrapper(

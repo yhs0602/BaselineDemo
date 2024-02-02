@@ -292,3 +292,4 @@ models
 videos
 runs
 *.zip
+.DS_Store
