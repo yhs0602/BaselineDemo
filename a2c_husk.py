@@ -27,6 +27,7 @@ def main():
         save_code=True,  # optional    save_code=True,  # optional
     )
     env = craftground.make(
+        verbose=False,
         port=8021,
         initialInventoryCommands=[],
         initialPosition=None,  # nullable
@@ -53,9 +54,11 @@ def main():
         initialExtraCommands=[],
         isHudHidden=False,
         render_action=True,
-        render_distance=2,
+        render_distance=5,
         simulation_distance=5,
         is_biocular=True,
+        render_alternating_eyes=True,
+        eye_distance=0.3,
     )
     env = FastResetWrapper(
         TimeLimitWrapper(
