@@ -5,11 +5,13 @@ AutoROM==0.6.1
 AutoROM.accept-rom-license==0.6.1
 cachetools==5.3.1
 certifi==2023.7.22
+cffi==1.16.0
 charset-normalizer==3.3.0
 click==8.1.7
 cloudpickle==3.0.0
 contourpy==1.1.1
-craftground @ git+https://github.com/yhs0602/CraftGround@1113ebfef244e9bf545e75c14bb23508898d9ac4
+craftground @ git+https://github.com/yhs0602/CraftGround@1622810b542269e6c94b9f68ff6d78dc2c73824f
+cryptography==42.0.2
 cycler==0.12.1
 decorator==4.4.2
 docker-pycreds==0.4.0
@@ -50,6 +52,7 @@ protobuf==4.23.4
 psutil==5.9.6
 pyasn1==0.5.0
 pyasn1-modules==0.3.0
+pycparser==2.21
 pygame==2.5.2
 Pygments==2.16.1
 pyparsing==3.1.1
