@@ -29,6 +29,7 @@ def fishing():
         initialInventoryCommands=[
             "fishing_rod{Enchantments:[{id:lure,lvl:3},{id:mending,lvl:1},{id:unbreaking,lvl:3}]} 1"
         ],
+        verbose=True,
         initialPosition=None,  # nullable
         initialMobsCommands=[],
         imageSizeX=size_x,
@@ -85,7 +86,7 @@ def fishing():
     )
 
     model.learn(
-        total_timesteps=400000,
+        total_timesteps=1000,
         callback=WandbCallback(
             gradient_save_freq=100,
             model_save_path=f"models/{run.id}",
