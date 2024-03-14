@@ -1,15 +1,14 @@
+import os.path
+
 import wandb
 from craftground import craftground
 from craftground.wrappers.action import ActionWrapper, Action
 from craftground.wrappers.fast_reset import FastResetWrapper
-from craftground.wrappers.sound import SoundWrapper
 from craftground.wrappers.vision import VisionWrapper
 from stable_baselines3 import A2C
 from stable_baselines3.common.monitor import Monitor
 from stable_baselines3.common.vec_env import VecVideoRecorder, DummyVecEnv
 from wandb.integration.sb3 import WandbCallback
-
-from wrappers.fishing_environment import FishAnythingWrapper
 
 
 def structure_any():
@@ -25,7 +24,7 @@ def structure_any():
     )
     size_x = 114
     size_y = 64
-    env, sound_list = (
+    base_env, sound_list = (
         craftground.make(
             port=8001,
             initialInventoryCommands=[],
@@ -40,7 +39,7 @@ def structure_any():
             allowMobSpawn=False,
             alwaysDay=True,
             alwaysNight=False,
-            initialWeather=None,  # nullable
+            initialWeather="clear",  # nullable
             isHardCore=False,
             isWorldFlat=True,  # superflat world
             obs_keys=[],  # No sound subtitles
@@ -50,13 +49,16 @@ def structure_any():
             render_action=True,
             render_distance=5,
             simulation_distance=5,
+            structure_paths=[
+                os.path.abspath("example_structure.nbt"),
+            ],
         ),
         [],
     )
     env = FastResetWrapper(
         ActionWrapper(
             VisionWrapper(
-                env,
+                base_env,
                 x_dim=size_x,
                 y_dim=size_y,
             ),
@@ -89,6 +91,7 @@ def structure_any():
     )
     # model.save("dqn_sound_husk")
     run.finish()
+    base_env.terminate()
 
     # vec_env = model.get_env()
     # obs = vec_env.reset()

@@ -10,7 +10,7 @@ charset-normalizer==3.3.0
 click==8.1.7
 cloudpickle==3.0.0
 contourpy==1.1.1
-craftground @ git+https://github.com/yhs0602/CraftGround@0e0e5fd15fda9ebb7f6f25d22e5c3ba1c3cd72c0
+craftground @ git+https://github.com/yhs0602/CraftGround@d948ea858e91220b9eee7a3268738cc2ff846b8b
 cryptography==42.0.2
 cycler==0.12.1
 decorator==4.4.2
