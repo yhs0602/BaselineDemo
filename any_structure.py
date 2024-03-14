@@ -29,7 +29,7 @@ def structure_any():
             port=8001,
             initialInventoryCommands=[],
             verbose=True,
-            initialPosition=[0, -60, 0],  # nullable
+            initialPosition=[6, -60, 1],  # nullable
             initialMobsCommands=[],
             imageSizeX=size_x,
             imageSizeY=size_y,
@@ -44,7 +44,9 @@ def structure_any():
             isWorldFlat=True,  # superflat world
             obs_keys=[],  # No sound subtitles
             miscStatKeys=[],  # No stats
-            initialExtraCommands=[],  # x y z yaw pitch
+            initialExtraCommands=[
+                "place template minecraft:example_structure 0 -60 0"
+            ],  # x y z yaw pitch
             isHudHidden=True,
             render_action=True,
             render_distance=5,
