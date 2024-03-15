@@ -29,7 +29,7 @@ def structure_any():
             port=8001,
             initialInventoryCommands=[],
             verbose=True,
-            initialPosition=[6, -60, 1],  # nullable
+            initialPosition=[5, 5, 5],  # nullable
             initialMobsCommands=[],
             imageSizeX=size_x,
             imageSizeY=size_y,
@@ -45,14 +45,15 @@ def structure_any():
             obs_keys=[],  # No sound subtitles
             miscStatKeys=[],  # No stats
             initialExtraCommands=[
-                "place template minecraft:example_structure 0 -60 0"
+                "place template minecraft:portable_maze 0 0 0",
+                "tp @p 5 5 5 -90 0",
             ],  # x y z yaw pitch
             isHudHidden=True,
             render_action=True,
             render_distance=5,
             simulation_distance=5,
             structure_paths=[
-                os.path.abspath("example_structure.nbt"),
+                os.path.abspath("portable_maze.nbt"),
             ],
         ),
         [],
